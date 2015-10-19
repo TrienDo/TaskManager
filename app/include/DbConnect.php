@@ -1,29 +1,36 @@
 <?php
-	// Database information
-	$settings = array(
-		'driver' => 'mysql',
-		'host' => 'localhost',
-		'database' => 'sharc',
-		'username' => 'root',
-		'password' => '',
-		'charset'   => 'utf8',
-		'collation' => 'utf8_general_ci',
-		'prefix' => ''
-	);
-
-	// Bootstrap Eloquent ORM
-	/*$connFactory = new \Illuminate\Database\Connectors\ConnectionFactory();
-	$conn = $connFactory->make($settings);
-	$resolver = new \Illuminate\Database\ConnectionResolver();
-	$resolver->addConnection('default', $conn);
-	$resolver->setDefaultConnection('default');
-	\Illuminate\Database\Eloquent\Model::setConnectionResolver($resolver);*/
-	
-	use Illuminate\Database\Capsule\Manager as Capsule;  
-
-	$capsule = new Capsule; 
-
-	$capsule->addConnection($settings);
-
-	$capsule->bootEloquent();
+ 
+/**
+ * Handling database connection
+ *
+ * @author Ravi Tamada
+ */
+class DbConnect {
+ 
+    private $conn;
+ 
+    function __construct() {        
+    }
+ 
+    /**
+     * Establishing database connection
+     * @return database connection handler
+     */
+    function connect() {
+        include_once dirname(__FILE__) . './Config.php';
+ 
+        // Connecting to mysql database
+        $this->conn = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
+ 
+        // Check for database connection error
+        if (mysqli_connect_errno()) {
+            echo "Failed to connect to MySQL: " . mysqli_connect_error();
+        }
+ 
+        // returing connection resource
+        return $this->conn;
+    }
+ 
+}
+ 
 ?>
