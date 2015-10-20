@@ -17,13 +17,23 @@
 	$resolver = new \Illuminate\Database\ConnectionResolver();
 	$resolver->addConnection('default', $conn);
 	$resolver->setDefaultConnection('default');
-	\Illuminate\Database\Eloquent\Model::setConnectionResolver($resolver);*/
+	\Illuminate\Database\Eloquent\Model::setConnectionResolver($resolver);
+	*/
 	
-	use Illuminate\Database\Capsule\Manager as Capsule;  
+	/*use Illuminate\Database\Capsule\Manager as Capsule;  
 
 	$capsule = new Capsule; 
 
 	$capsule->addConnection($settings);
 
+	$capsule->bootEloquent();*/
+	
+	use Illuminate\Database\Capsule\Manager as Capsule;
+	use Illuminate\Events\Dispatcher;
+	use Illuminate\Container\Container;
+
+	$capsule = new Capsule;
+	$capsule->addConnection($settings);
+	$capsule->setEventDispatcher(new Dispatcher(new Container));
 	$capsule->bootEloquent();
 ?>
